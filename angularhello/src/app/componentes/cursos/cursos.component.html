@@ -1,0 +1,202 @@
+<div class="contenedor">
+
+  <h2>Alta de Curso</h2>
+
+  <form
+    [formGroup]="formulario"
+    (ngSubmit)="guardarCurso()"
+  >
+    <!-- CICLO LECTIVO -->
+
+    <div class="campo">
+
+      <label for="ciclo_lectivo">
+        Ciclo lectivo
+      </label>
+
+      <input
+        id="ciclo_lectivo"
+        type="text"
+        formControlName="ciclo_lectivo"
+      >
+
+      @if (
+        formulario.get('ciclo_lectivo')?.touched &&
+        formulario.get('ciclo_lectivo')?.hasError('required')
+      ) {
+        <span>
+          El ciclo lectivo es obligatorio.
+        </span>
+      }
+
+    </div>
+    <!-- DIVISIÓN -->
+
+    <div class="campo">
+
+      <label for="division">
+        División
+      </label>
+
+      <input
+        id="division"
+        type="text"
+        formControlName="division"
+      >
+      @if (
+        formulario.get('division')?.touched &&
+        formulario.get('division')?.hasError('required')
+      ) {
+        <span>
+          La división es obligatoria.
+        </span>
+      }
+
+    </div>
+    <!-- GRADO -->
+
+    <div class="campo">
+      <label for="grado">
+        Grado
+      </label>
+
+      <input
+        id="grado"
+        type="text"
+        formControlName="grado"
+      >
+      @if (
+        formulario.get('grado')?.touched &&
+        formulario.get('grado')?.hasError('required')
+      ) {
+        <span>
+          El grado es obligatorio.
+        </span>
+      }
+
+    </div>
+    <!-- TURNO -->
+
+    <div class="campo">
+
+      <label for="turno">
+        Turno
+      </label>
+
+      <select
+        id="turno"
+        formControlName="turno"
+      >
+        <option value="">
+          Seleccionar turno
+        </option>
+
+        <option value="MAÑANA">
+          Mañana
+        </option>
+
+        <option value="TARDE">
+          Tarde
+        </option>
+
+        <option value="NOCHE">
+          Noche
+        </option>
+
+      </select>
+
+      @if (
+        formulario.get('turno')?.touched &&
+        formulario.get('turno')?.hasError('required')
+      ) {
+        <span>
+          El turno es obligatorio.
+        </span>
+      }
+
+    </div>
+    <!-- CUPO MÁXIMO -->
+
+    <div class="campo">
+
+      <label for="cupo_maximo">
+        Cupo máximo
+      </label>
+      <input
+        id="cupo_maximo"
+        type="text"
+        formControlName="cupo_maximo"
+      >
+      @if (
+        formulario.get('cupo_maximo')?.touched &&
+        formulario.get('cupo_maximo')?.hasError('required')
+      ) {
+        <span>
+          El cupo máximo es obligatorio.
+        </span>
+      }
+    </div>
+    @if (mensajeError) {
+      <div class="mensaje-error">
+        {{ mensajeError }}
+      </div>
+    }
+    @if (mensajeExito) {
+      <div class="mensaje-exito">
+        {{ mensajeExito }}
+      </div>
+    }
+    <button type="submit">
+      Guardar curso
+    </button>
+  </form>
+  <hr>
+  <!-- LISTADO -->
+  <h2>Listado de Cursos</h2>
+
+  @if (cursos.length === 0) {
+    <p>
+      No hay cursos registrados.
+    </p>
+  } @else {
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Ciclo lectivo</th>
+          <th>División</th>
+          <th>Grado</th>
+          <th>Turno</th>
+          <th>Cupo máximo</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        @for (curso of cursos; track curso.id) {
+
+          <tr>
+            <td>
+              {{ curso.id }}
+            </td>
+            <td>
+              {{ curso.ciclo_lectivo }}
+            </td>
+            <td>
+              {{ curso.division }}
+            </td>
+            <td>
+              {{ curso.grado }}
+            </td>
+            <td>
+              {{ curso.turno }}
+            </td>
+            <td>
+              {{ curso.cupo_maximo }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

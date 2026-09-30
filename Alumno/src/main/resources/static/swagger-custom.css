@@ -1,0 +1,72 @@
+@charset "UTF-8";
+/* Tipografía más prolija */
+body, .swagger-ui {
+  font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+}
+
+/* Header: sacamos la topbar verde default de Swagger */
+.swagger-ui .topbar {
+  background-color: #1F3864;
+  padding: 12px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.swagger-ui .topbar .download-url-wrapper input[type=text] {
+  border-radius: 6px;
+}
+
+/* Título de la API */
+.swagger-ui .info .title {
+  color: #1F3864;
+  font-weight: 700;
+}
+
+/* Fondo general, más limpio */
+.swagger-ui, body {
+  background-color: #FAFBFC;
+}
+
+/* Bloques de cada endpoint */
+.swagger-ui .opblock {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  border: 1px solid #E3E7EC;
+  margin-bottom: 12px;
+}
+
+/* Color por método HTTP, más suaves */
+.swagger-ui .opblock.opblock-post {
+  background: #EAF6F3;
+  border-color: #4FD1C5;
+}
+.swagger-ui .opblock.opblock-post .opblock-summary-method {
+  background: #2C9C8E;
+}
+
+.swagger-ui .opblock.opblock-get {
+  background: #EEF3FA;
+  border-color: #5A8FD6;
+}
+.swagger-ui .opblock.opblock-get .opblock-summary-method {
+  background: #3D6FB3;
+}
+
+/* Botón "Try it out" y "Execute" */
+.swagger-ui .btn.try-out__btn,
+.swagger-ui .btn.execute {
+  border-radius: 6px;
+  font-weight: 600;
+}
+.swagger-ui .btn.execute {
+  background-color: #2C5F8A;
+  border-color: #2C5F8A;
+}
+
+/* Tablas de parámetros/respuestas, más aire */
+.swagger-ui table tbody tr td {
+  padding: 10px 8px;
+}
+
+/* Bloques de código (ejemplos JSON) */
+.swagger-ui .microlight {
+  border-radius: 6px;
+}

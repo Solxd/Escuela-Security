@@ -1,0 +1,238 @@
+<div class="contenedor">
+
+  <h2>Alta de Personal</h2>
+
+  <form
+    [formGroup]="formulario"
+    (ngSubmit)="guardarAdministracion()"
+  >
+
+    <!-- NOMBRE -->
+
+    <div class="campo">
+
+      <label for="nombre">
+        Nombre
+      </label>
+
+      <input
+        id="nombre"
+        type="text"
+        formControlName="nombre"
+      >
+
+      @if (
+        formulario.get('nombre')?.touched &&
+        formulario.get('nombre')?.hasError('required')
+      ) {
+        <span>
+          El nombre es obligatorio.
+        </span>
+      }
+
+      @if (
+        formulario.get('nombre')?.touched &&
+        formulario.get('nombre')?.hasError('minlength')
+      ) {
+        <span>
+          El nombre debe tener al menos 3 caracteres.
+        </span>
+      }
+
+    </div>
+
+
+    <!-- APELLIDO -->
+
+    <div class="campo">
+
+      <label for="apellido">
+        Apellido
+      </label>
+
+      <input
+        id="apellido"
+        type="text"
+        formControlName="apellido"
+      >
+
+      @if (
+        formulario.get('apellido')?.touched &&
+        formulario.get('apellido')?.hasError('required')
+      ) {
+        <span>
+          El apellido es obligatorio.
+        </span>
+      }
+
+    </div>
+
+
+    <!-- EMAIL -->
+
+    <div class="campo">
+
+      <label for="email">
+        Email
+      </label>
+
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+      >
+
+      @if (
+        formulario.get('email')?.touched &&
+        formulario.get('email')?.hasError('required')
+      ) {
+        <span>
+          El email es obligatorio.
+        </span>
+      }
+
+      @if (
+        formulario.get('email')?.touched &&
+        formulario.get('email')?.hasError('email')
+      ) {
+        <span>
+          Ingresá un email válido.
+        </span>
+      }
+
+    </div>
+
+
+    <!-- CARGO -->
+
+    <div class="campo">
+
+      <label for="cargo">
+        Cargo
+      </label>
+
+      <select
+        id="cargo"
+        formControlName="cargo"
+      >
+
+        <option value="">
+          Seleccionar cargo
+        </option>
+
+        @for (cargo of cargos; track cargo) {
+
+          <option [value]="cargo">
+            {{ cargo }}
+          </option>
+
+        }
+
+      </select>
+
+      @if (
+        formulario.get('cargo')?.touched &&
+        formulario.get('cargo')?.hasError('required')
+      ) {
+        <span>
+          El cargo es obligatorio.
+        </span>
+      }
+
+    </div>
+
+
+    @if (mensajeError) {
+
+      <div class="mensaje-error">
+        {{ mensajeError }}
+      </div>
+
+    }
+
+
+    @if (mensajeExito) {
+
+      <div class="mensaje-exito">
+        {{ mensajeExito }}
+      </div>
+
+    }
+
+
+    <button type="submit">
+      Guardar personal
+    </button>
+
+  </form>
+
+
+  <hr>
+
+
+  <!-- LISTADO -->
+
+  <h2>Listado de Personal</h2>
+
+  @if (administracion.length === 0) {
+
+    <p>
+      No hay personal registrado.
+    </p>
+
+  } @else {
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Cargo</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        @for (
+          persona of administracion;
+          track persona.id
+        ) {
+
+          <tr>
+
+            <td>
+              {{ persona.id }}
+            </td>
+
+            <td>
+              {{ persona.nombre }}
+            </td>
+
+            <td>
+              {{ persona.apellido }}
+            </td>
+
+            <td>
+              {{ persona.email }}
+            </td>
+
+            <td>
+              {{ persona.cargo }}
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  }
+
+</div>
