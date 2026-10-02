@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <h2 class="text-primary mb-3">Gestión de Alumnos</h2>
+
+  <div *ngIf="mensaje" class="alert alert-danger">{{ mensaje }}</div>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()" class="card p-3 bg-light mb-4 shadow-sm" style="max-width: 400px;">
+    <div class="mb-3">
+      <label class="form-label fw-bold">Nombre:</label>
+      <input class="form-control" formControlName="nombre" [class.is-invalid]="invalido('nombre')">
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-bold">Apellido:</label>
+      <input class="form-control" formControlName="apellido" [class.is-invalid]="invalido('apellido')">
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-bold">DNI:</label>
+      <input class="form-control" formControlName="dni" [class.is-invalid]="invalido('dni')">
+      <div class="invalid-feedback">Debe tener 7 u 8 dígitos</div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-bold">Email:</label>
+      <input type="email" class="form-control" formControlName="email" [class.is-invalid]="invalido('email')">
+      <div class="invalid-feedback">Email no válido</div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Guardar Alumno</button>
+  </form>
+
+  <h3 class="h4 text-secondary mb-3">Listado de Alumnos</h3>
+
+  <div *ngIf="alumnos.length > 0; else sinAlumnos" class="table-responsive">
+    <table class="table table-striped table-hover border">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>DNI</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of alumnos">
+          <td>{{ a.id }}</td>
+          <td>{{ a.nombre }}</td>
+          <td>{{ a.apellido }}</td>
+          <td>{{ a.dni }}</td>
+          <td>{{ a.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #sinAlumnos>
+    <div class="alert alert-info">No hay alumnos registrados aún.</div>
+  </ng-template>
+</div>
