@@ -29,24 +29,19 @@ public class GatewaySecurityConfig {
 
         return http
             .csrf(ServerHttpSecurity.CsrfSpec::disable)
-            .cors(Customizer.withDefaults())   // usa el bean corsConfigurationSource de CorsConfig
+            .cors(Customizer.withDefaults())   
 
             .authorizeExchange(exchanges -> exchanges
 
-                // Preflight de CORS (el navegador/Angular lo manda sin token)
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
 
-                // Rutas públicas: login y swagger
                 .pathMatchers(
-                    "/api/auth/**",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
-                    "/v3/api-docs/**",
-                    "/webjars/**"
-                ).permitAll()
-
-                // Todo lo demás: JWT válido + rol ADMIN o DOCENTE
-                // (es lo mismo que tenías en los micros con hasAnyRole)
+                	    "/api/auth/**",
+                	    "/alumno/swagger-ui/**", "/alumno/swagger-ui.html", "/alumno/v3/api-docs/**",
+                	    "/curso/swagger-ui/**", "/curso/swagger-ui.html", "/curso/v3/api-docs/**",
+                	    "/administracion/swagger-ui/**", "/administracion/swagger-ui.html", "/administracion/v3/api-docs/**"
+                	).permitAll()
+                
                 .anyExchange().hasAnyRole("ADMIN", "DOCENTE")
             )
 
@@ -56,8 +51,6 @@ public class GatewaySecurityConfig {
             .build();
     }
 
-    // Tu security guarda el rol en el claim "role" con valor "ROLE_ADMIN".
-    // Este converter le dice al gateway que lea ese claim y NO agregue otro prefijo.
     private ReactiveJwtAuthenticationConverterAdapter jwtAuthConverter() {
         JwtGrantedAuthoritiesConverter authorities = new JwtGrantedAuthoritiesConverter();
         authorities.setAuthoritiesClaimName("role");
@@ -68,8 +61,6 @@ public class GatewaySecurityConfig {
         return new ReactiveJwtAuthenticationConverterAdapter(converter);
     }
 
-    // Tiene que usar EXACTAMENTE la misma clave que JwtTokenProvider (security).
-    // Tu provider firma con HS256 y la clave en texto plano (UTF-8), por eso se arma así.
     @Bean
     public ReactiveJwtDecoder jwtDecoder(@Value("${jwt.secret}") String secret) {
         SecretKey key = new SecretKeySpec(

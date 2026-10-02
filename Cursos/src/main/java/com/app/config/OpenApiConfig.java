@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
     info = @Info(title = "API Cursos"),                        
-    servers = @Server(url = "http://localhost:8081"),           // el GATEWAY
-    security = @SecurityRequirement(name = "bearerAuth")        // manda el token en todos los endpoints
+    servers = @Server(url = "http://localhost:8081"),          
+    security = @SecurityRequirement(name = "bearerAuth")        
 )
 @SecurityScheme(
     name = "bearerAuth",

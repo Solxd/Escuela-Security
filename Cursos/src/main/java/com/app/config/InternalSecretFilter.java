@@ -17,15 +17,9 @@ public class InternalSecretFilter extends OncePerRequestFilter {
     @Value("${app.internal-secret}")
     private String internalSecret;
 
-    // Estas rutas no pasan por el gateway (la página de swagger, actuator para AdminServer).
-    // Los endpoints de negocio (/alumnos, /cursos, /personal) SÍ quedan protegidos.
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-        return path.startsWith("/swagger-ui")
-            || path.startsWith("/v3/api-docs")
-            || path.startsWith("/h2-console")
-            || path.startsWith("/actuator");
+        return request.getRequestURI().startsWith("/actuator");
     }
 
     @Override
