@@ -1,0 +1,221 @@
+<div class="contenedor">
+
+  <h2>Alta de Alumno</h2>
+
+  <form
+    [formGroup]="formulario"
+    (ngSubmit)="guardarAlumno()"
+  >
+
+    <div class="campo">
+
+      <label for="nombre">
+        Nombre
+      </label>
+
+      <input
+        id="nombre"
+        type="text"
+        formControlName="nombre"
+      >
+
+      @if (
+        formulario.get('nombre')?.touched &&
+        formulario.get('nombre')?.hasError('required')
+      ) {
+        <span>
+          El nombre es obligatorio.
+        </span>
+      }
+
+      @if (
+        formulario.get('nombre')?.touched &&
+        formulario.get('nombre')?.hasError('minlength')
+      ) {
+        <span>
+          El nombre debe tener al menos 3 caracteres.
+        </span>
+      }
+
+    </div>
+
+
+    <div class="campo">
+
+      <label for="apellido">
+        Apellido
+      </label>
+
+      <input
+        id="apellido"
+        type="text"
+        formControlName="apellido"
+      >
+
+      @if (
+        formulario.get('apellido')?.touched &&
+        formulario.get('apellido')?.hasError('required')
+      ) {
+        <span>
+          El apellido es obligatorio.
+        </span>
+      }
+
+    </div>
+
+
+    <div class="campo">
+
+      <label for="dni">
+        DNI
+      </label>
+
+      <input
+        id="dni"
+        type="text"
+        formControlName="dni"
+      >
+
+      @if (
+        formulario.get('dni')?.touched &&
+        formulario.get('dni')?.hasError('required')
+      ) {
+        <span>
+          El DNI es obligatorio.
+        </span>
+      }
+
+      @if (
+        formulario.get('dni')?.touched &&
+        formulario.get('dni')?.hasError('pattern')
+      ) {
+        <span>
+          El DNI debe tener entre 7 y 8 números.
+        </span>
+      }
+
+    </div>
+
+
+    <div class="campo">
+
+      <label for="email">
+        Email
+      </label>
+
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+      >
+
+      @if (
+        formulario.get('email')?.touched &&
+        formulario.get('email')?.hasError('required')
+      ) {
+        <span>
+          El email es obligatorio.
+        </span>
+      }
+
+      @if (
+        formulario.get('email')?.touched &&
+        formulario.get('email')?.hasError('email')
+      ) {
+        <span>
+          Ingresá un email válido.
+        </span>
+      }
+
+    </div>
+
+
+    @if (mensajeError) {
+
+      <div class="mensaje-error">
+        {{ mensajeError }}
+      </div>
+
+    }
+
+
+    @if (mensajeExito) {
+
+      <div class="mensaje-exito">
+        {{ mensajeExito }}
+      </div>
+
+    }
+
+
+    <button type="submit">
+      Guardar alumno
+    </button>
+
+  </form>
+
+
+  <hr>
+
+
+  <h2>Listado de Alumnos</h2>
+
+  @if (alumnos.length === 0) {
+
+    <p>
+      No hay alumnos registrados.
+    </p>
+
+  } @else {
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>DNI</th>
+          <th>Email</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        @for (alumno of alumnos; track alumno.id) {
+
+          <tr>
+
+            <td>
+              {{ alumno.id }}
+            </td>
+
+            <td>
+              {{ alumno.nombre }}
+            </td>
+
+            <td>
+              {{ alumno.apellido }}
+            </td>
+
+            <td>
+              {{ alumno.dni }}
+            </td>
+
+            <td>
+              {{ alumno.email }}
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  }
+
+</div>
