@@ -1,122 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {CursoService,Curso} from '../../service/curso.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CursoService, Curso } from '../../service/curso.service';
 
-@Component({
-  selector: 'app-cursos',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ],
-  templateUrl: './cursos.component.html',
-  styleUrl: './cursos.component.css'
-})
+@Component({ selector: 'app-cursos', standalone: true, imports: [CommonModule, ReactiveFormsModule], templateUrl: './cursos.component.html', styleUrl: './cursos.component.css' })
 export class CursosComponent implements OnInit {
-
-  formulario!: FormGroup;
   cursos: Curso[] = [];
-  mensajeError = '';
-  mensajeExito = '';
-
-  constructor(
-    private fb: FormBuilder,
-    private cursoService: CursoService
-  ) {}
-
-  ngOnInit(): void {
-    this.inicializarFormulario();
-    this.obtenerCursos();
-  }
-
-  inicializarFormulario(): void {
-    this.formulario = this.fb.group({
-      ciclo_lectivo: [
-        '',
-        [
-          Validators.required
-        ]
-      ],
-
-      division: [
-        '',
-        [
-          Validators.required
-        ]
-      ],
-      grado: [
-        '',
-        [
-          Validators.required
-        ]
-      ],
-      turno: [
-        '',
-        [
-          Validators.required
-        ]
-      ],
-      cupo_maximo: [
-        '',
-        [
-          Validators.required
-        ]
-      ]
+  form: FormGroup;
+  mensaje = '';
+  constructor(private fb: FormBuilder, private servicio: CursoService) {
+    this.form = this.fb.group({
+      ciclo_lectivo: [new Date().getFullYear(), [Validators.required, Validators.min(2000)]],
+      grado: ['', Validators.required],
+      division: ['', Validators.required],
+      turno: ['', Validators.required],
+      cupo_maximo: [30, [Validators.required, Validators.min(1)]]
     });
   }
-
-  obtenerCursos(): void {
-    this.cursoService.obtenerCursos().subscribe({
-      next: (respuesta) => {
-        this.cursos = respuesta;
+  ngOnInit(): void { this.cargar(); }
+  invalido(campo: string): boolean {
+    const c = this.form.get(campo);
+    return !!c && c.invalid && c.touched;
+  }
+  cargar(): void {
+    this.servicio.listarCursos().subscribe({ next: d => this.cursos = d, error: () => this.mensaje = 'No se pudo cargar la lista' });
+  }
+  guardar(): void {
+    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    this.servicio.agregarCurso(this.form.value).subscribe({
+      next: () => {
+        this.form.reset({ ciclo_lectivo: new Date().getFullYear(), grado: '', division: '', turno: '', cupo_maximo: 30 });
+        this.mensaje = '';
+        this.cargar();
       },
-
-      error: (error) => {
-        console.error(
-          'Error al obtener cursos:',
-          error
-        );
-        this.mensajeError =
-          'No se pudieron obtener los cursos.';
-      }
+      error: () => this.mensaje = 'No se pudo guardar'
     });
   }
-
-  guardarCurso(): void {
-    if (this.formulario.invalid) {
-      this.formulario.markAllAsTouched();
-      return;
-    }
-
-    this.mensajeError = '';
-    this.mensajeExito = '';
-    const nuevoCurso: Curso = this.formulario.value;
-    this.cursoService
-      .crearCurso(nuevoCurso)
-      .subscribe({
-
-        next: (respuesta) => {
-          console.log(
-            'Curso creado:',
-            respuesta
-          );
-          this.mensajeExito =
-            'Curso registrado correctamente.';
-          this.formulario.reset();
-          this.obtenerCursos();
-        },
-
-        error: (error) => {
-          console.error(
-            'Error al crear curso:',
-            error
-          );
-          this.mensajeError =
-            'No se pudo registrar el curso.';
-        }
-      });
-
-  }
-
 }
