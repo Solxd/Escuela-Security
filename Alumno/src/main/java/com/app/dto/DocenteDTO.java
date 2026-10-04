@@ -5,7 +5,7 @@ public class DocenteDTO {
     private String nombre;
     private String apellido;
     private String email;
-    private String cargo;   // acá como String, no como enum — te explico por qué abajo    
+    private String cargo;     
   
     public DocenteDTO() {
 	}

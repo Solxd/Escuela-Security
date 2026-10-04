@@ -1,11 +1,13 @@
 package com.app.service;
 
 import java.util.List;
+
+import com.app.dto.AlumnoAltaDTO;
 import com.app.dto.AlumnoConCursoDTO;
-import com.app.model.Alumno;
+import com.app.dto.AlumnoDTO;
 
 public interface AlumnoService {
-    Alumno altaAlumno(Alumno alumno);
-    List<Alumno> listarAlumnos();
+    AlumnoDTO altaAlumno(AlumnoAltaDTO dto);
+    List<AlumnoDTO> listarAlumnos();
     AlumnoConCursoDTO obtenerConCurso(Long alumnoId);
 }

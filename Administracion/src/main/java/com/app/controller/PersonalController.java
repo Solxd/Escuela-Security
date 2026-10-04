@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.PersonalAltaDTO;
+import com.app.dto.PersonalResponseDTO;
 import com.app.model.Personal;
 import com.app.service.PersonalService;
 
@@ -28,37 +29,35 @@ public class PersonalController {
         this.personalService = personalService;
     }
 
-    @PostMapping
-    public ResponseEntity<Personal> altaPersonal(
-            @RequestBody PersonalAltaDTO dto) {
 
-        Personal nuevo = new Personal();
+@PostMapping
+public ResponseEntity<PersonalResponseDTO> altaPersonal(
+        @RequestBody PersonalAltaDTO dto) {
 
-        nuevo.setNombre(dto.getNombre());
-        nuevo.setApellido(dto.getApellido());
-        nuevo.setEmail(dto.getEmail());
-        nuevo.setCargo(dto.getCargo());
+    Personal nuevo = new Personal();
 
-        Personal creado = personalService.altaPersonal(nuevo);
+    nuevo.setNombre(dto.getNombre());
+    nuevo.setApellido(dto.getApellido());
+    nuevo.setEmail(dto.getEmail());
+    nuevo.setCargo(dto.getCargo());
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(creado);
-    }
+    PersonalResponseDTO creado = personalService.altaPersonal(nuevo);
 
-    @GetMapping
-    public ResponseEntity<List<Personal>> listarPersonal() {
-        return ResponseEntity.ok(
-                personalService.listarPersonal()
-        );
-    }
+    return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Personal> obtenerPorId(
-            @PathVariable Long id) {
 
-        return personalService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+@GetMapping
+public ResponseEntity<List<PersonalResponseDTO>> listarPersonal() {
+    return ResponseEntity.ok(personalService.listarPersonal());
+}
+
+@GetMapping("/{id}")
+public ResponseEntity<PersonalResponseDTO> obtenerPorId(
+        @PathVariable Long id) {
+
+    return personalService.obtenerPorId(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+}
 }

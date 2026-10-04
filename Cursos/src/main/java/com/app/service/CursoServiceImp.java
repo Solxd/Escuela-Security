@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.app.dto.CursoResponseDTO;
 import com.app.model.Alumno;
 import com.app.model.Curso;
 import com.app.repository.AlumnoRepository;
@@ -21,21 +23,38 @@ public class CursoServiceImp implements CursoService {
         this.alumnoRepository = alumnoRepository;
     }
 
-    @Override
-    public Curso altaCursos(Curso curso) {
-        return cursoRepository.save(curso);
-    }
 
-    @Override
-    public List<Curso> listarCursos() {
-        return cursoRepository.findAll();
-    }
+@Override
+public CursoResponseDTO altaCursos(Curso curso) {
+    Curso guardado = cursoRepository.save(curso);
+    return toDto(guardado);
+}
 
-    @Override
-    public Optional<Curso> obtenerPorId(Long id) {
-        return cursoRepository.findById(id);
-    }
+@Override
+public List<CursoResponseDTO> listarCursos() {
+    return cursoRepository.findAll()
+            .stream()
+            .map(this::toDto)
+            .toList();
+}
 
+@Override
+public Optional<CursoResponseDTO> obtenerPorId(Long id) {
+    return cursoRepository.findById(id).map(this::toDto);
+}
+
+private CursoResponseDTO toDto(Curso curso) {
+    CursoResponseDTO dto = new CursoResponseDTO();
+
+    dto.setId(curso.getId());
+    dto.setCiclo_lectivo(curso.getCiclo_lectivo());
+    dto.setDivision(curso.getDivision());
+    dto.setGrado(curso.getGrado());
+    dto.setTurno(curso.getTurno());
+    dto.setCupo_maximo(curso.getCupo_maximo());
+
+    return dto;
+}
     @Override
     @Transactional
     public void registrarALumno(long idCurso, long idAlumno) {

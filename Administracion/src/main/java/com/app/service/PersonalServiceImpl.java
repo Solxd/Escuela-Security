@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.app.dto.PersonalResponseDTO;
 import com.app.model.Personal;
 import com.app.repository.PersonalRepository;
 
@@ -17,19 +18,39 @@ public class PersonalServiceImpl implements PersonalService {
         this.personalRepository = personalRepository;
     }
 
-    @Override
-    public Personal altaPersonal(Personal personal) {
-        personal.setId(null); // Garantiza que sea una creación y no una actualización
-        return personalRepository.save(personal);
-    }
 
-    @Override
-    public List<Personal> listarPersonal() {
-        return personalRepository.findAll();
-    }
+@Override
+public PersonalResponseDTO altaPersonal(Personal personal) {
 
-    @Override
-    public Optional<Personal> obtenerPorId(Long id) {
-        return personalRepository.findById(id);
-    }
+    personal.setId(null);
+
+    Personal guardado = personalRepository.save(personal);
+
+    return toDto(guardado);
+}
+
+@Override
+public List<PersonalResponseDTO> listarPersonal() {
+    return personalRepository.findAll()
+            .stream()
+            .map(this::toDto)
+            .toList();
+}
+
+@Override
+public Optional<PersonalResponseDTO> obtenerPorId(Long id) {
+    return personalRepository.findById(id).map(this::toDto);
+}
+
+private PersonalResponseDTO toDto(Personal personal) {
+    PersonalResponseDTO dto = new PersonalResponseDTO();
+
+    dto.setId(personal.getId());
+    dto.setNombre(personal.getNombre());
+    dto.setApellido(personal.getApellido());
+    dto.setEmail(personal.getEmail());
+    dto.setCargo(personal.getCargo());
+
+    return dto;
+}
 }

@@ -1,15 +1,17 @@
+
 package com.app.service;
 
 import java.util.List;
 import java.util.Optional;
 
+import com.app.dto.PersonalResponseDTO;
 import com.app.model.Personal;
 
 public interface PersonalService {
 
-    Personal altaPersonal(Personal personal);
-    
-    Optional<Personal> obtenerPorId(Long id);
+    PersonalResponseDTO altaPersonal(Personal personal);
 
-    List<Personal> listarPersonal();
+    Optional<PersonalResponseDTO> obtenerPorId(Long id);
+
+    List<PersonalResponseDTO> listarPersonal();
 }

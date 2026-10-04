@@ -1,30 +1,42 @@
 package com.app.service;
 
-import com.app.dto.AlumnoConCursoDTO;
-import com.app.model.Alumno;
-import com.app.repository.AlumnoRepository;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.app.dto.AlumnoAltaDTO;
+import com.app.dto.AlumnoConCursoDTO;
+import com.app.dto.AlumnoDTO;
+import com.app.model.Alumno;
+import com.app.repository.AlumnoRepository;
 
 @Service
 public class AlumnoServiceImpl implements AlumnoService {
 
     private final AlumnoRepository alumnoRepository;
 
-    // CONSTRUCTOR MANUAL (Inyección de dependencias de Spring)
     public AlumnoServiceImpl(AlumnoRepository alumnoRepository) {
         this.alumnoRepository = alumnoRepository;
     }
 
     @Override
-    public Alumno altaAlumno(Alumno alumno) {
-        return alumnoRepository.save(alumno);
+    public AlumnoDTO altaAlumno(AlumnoAltaDTO dto) {
+        Alumno nuevo = new Alumno();
+        nuevo.setNombre(dto.getNombre());
+        nuevo.setApellido(dto.getApellido());
+        nuevo.setDni(dto.getDni());
+        nuevo.setEmail(dto.getEmail());
+
+        Alumno guardado = alumnoRepository.save(nuevo);
+        return convertirADTO(guardado);
     }
 
     @Override
-    public List<Alumno> listarAlumnos() {
-        return alumnoRepository.findAll();
+    public List<AlumnoDTO> listarAlumnos() {
+        return alumnoRepository.findAll()
+                .stream()
+                .map(this::convertirADTO)
+                .toList();
     }
 
     @Override
@@ -40,5 +52,14 @@ public class AlumnoServiceImpl implements AlumnoService {
         dto.setEmail(alumno.getEmail());
 
         return dto;
+    }
+
+    private AlumnoDTO convertirADTO(Alumno alumno) {
+        return new AlumnoDTO(
+                alumno.getId(),
+                alumno.getNombre(),
+                alumno.getApellido(),
+                alumno.getDni(),
+                alumno.getEmail());
     }
 }

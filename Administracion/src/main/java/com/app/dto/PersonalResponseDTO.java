@@ -1,27 +1,37 @@
+
 package com.app.dto;
 
-import com.app.Enum.Cargo; 
+import com.app.Enum.Cargo;
 
-public class PersonalAltaDTO {
+public class PersonalResponseDTO {
 
+    private Long id;
     private String nombre;
     private String apellido;
     private String email;
     private Cargo cargo;
 
-    // 1. Constructor vacío
-    public PersonalAltaDTO() {
+    public PersonalResponseDTO() {
     }
 
-    // 2. Constructor completo
-    public PersonalAltaDTO(String nombre, String apellido, String email, Cargo cargo) {
+    public PersonalResponseDTO(Long id, String nombre,
+            String apellido, String email, Cargo cargo) {
+
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.cargo = cargo;
     }
 
-    // 3. Getters y Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
     }
