@@ -17,17 +17,20 @@ public class Alumno {
     private String apellido;
     private String dni;
     private String email;
+    private Long idCurso;
         
 	public Alumno() {
 	}
 
-	public Alumno(Long id, String nombre, String apellido, String dni, String email) {
+	public Alumno(Long id, String nombre, String apellido, String dni, String email, Long idCurso) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
 		this.email = email;
+		this.idCurso = idCurso;
+		
 	}
 	
 	public Long getId() {
@@ -60,5 +63,14 @@ public class Alumno {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public Long getIdCurso() {
+		return idCurso;
+	}
+
+	public void setIdCurso(Long idCurso) {
+		this.idCurso = idCurso;
+	}
+	
 
 }
