@@ -8,8 +8,7 @@ import com.app.model.Alumno;
 import com.app.model.Curso;
 import com.app.repository.CursoRepository;
 
-import jakarta.transaction.Transactional;
-
+import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 public class CursoListener {

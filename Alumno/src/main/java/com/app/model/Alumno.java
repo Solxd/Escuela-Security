@@ -1,6 +1,10 @@
 package com.app.model;
 
+import com.app.Enum.Estado;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +22,9 @@ public class Alumno {
     private String dni;
     private String email;
     private Long idCurso;
+    
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
         
 	public Alumno() {
 	}
